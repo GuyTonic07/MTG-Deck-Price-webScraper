@@ -1,3 +1,4 @@
+
 import random
 import requests
 from bs4 import BeautifulSoup
@@ -6,7 +7,7 @@ from bs4 import BeautifulSoup
 # URL of the Archidekt deck
 
 
-def get_deck_price(decklink):
+def get_deck_priceArch(decklink):
     try:
         # Send a request to fetch the content of the page
         response = requests.get(decklink)
@@ -31,11 +32,37 @@ def get_deck_price(decklink):
             return None  # Failed to fetch the webpage
     except Exception as e:
         return None  # An error occurred
-
-
-
-
-
+    
+    
+def get_deck_priceTapped(decklink):
+    try:
+        # Send a request to fetch the content of the page
+        response = requests.get(decklink)
+        
+        if response.status_code == 200:
+            # Parse the content of the page
+            soup = BeautifulSoup(response.content, 'html.parser')
+            
+            price_element = soup.find('button', class_='btn-warning')
+            
+            if price_element:
+                price_text = price_element.find_all('span', class_='pull-right')[0].text.strip()
+                price_range = price_text.split(' - ')
+                
+                if len(price_range) == 2:
+                    min_price = (price_range[0][1:])  # Remove the dollar sign and convert to float
+                    max_price = (price_range[1][0:])  # Remove the dollar sign and convert to float
+                    price = [min_price, max_price]  
+                    return price
+                else:
+                    return None  # Return None if price range is not properly found
+            else:
+                return None  # Price element not found
+        else:
+            return None  # Failed to fetch the webpage
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None  # An error occurred
 
 
 
