@@ -1,11 +1,11 @@
-#set up
+#Made by GuyTonic 
 from discord import Intents, Message
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv, find_dotenv
 import os
 from typing import Final
-from Responses import get_response, get_deck_price
+from Responses import get_response, get_deck_priceArch, get_deck_priceTapped
 
 load_dotenv(find_dotenv())
 TOKEN: Final = os.getenv('DISCORD_TOKEN')
@@ -38,12 +38,22 @@ async def Quote(ctx):
 
 @bot.command()
 async def pricecheck(ctx, decklink: str):
-    price = get_deck_price(decklink)  # Call the function from scraper.py
-    
-    if price:
-        await ctx.send(f'Based on Card kingdom \nThe price of the deck is: {price}$')
-    else:
-        await ctx.send('Failed to retrieve the deck price. Please check the link and try again.')
+    if 'archidekt.com' in decklink:
+        price = get_deck_priceArch(decklink)  # Call the function from
+        if price:
+            await ctx.send(f'Based on Card kingdom \nThe price of the deck is: {price}$')
+
+        else:
+            await ctx.send('Failed to retrieve the deck price from Archidekt. Please check the link and try again.')
+        
+    elif 'tappedout.net' in decklink:
+        price = get_deck_priceTapped(decklink)
+        if price:
+            
+            await ctx.send(f'Based on Card kingdom \nThe price of the deck is: {price[0]}$' + '-' + price[1] + '$')
+
+        else:
+            await ctx.send('Failed to retrieve the deck price from Tappedout. Please check the link and try again.')
 
 ###########################Error handling####################################
 @bot.event
