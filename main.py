@@ -5,7 +5,7 @@ from discord.ext import commands
 from dotenv import load_dotenv, find_dotenv
 import os
 from typing import Final
-from Responses import get_response, get_deck_priceArch, get_deck_priceTapped
+from Responses import get_response, get_deck_priceArch, get_deck_price_tapped
 
 load_dotenv(find_dotenv())
 TOKEN: Final = os.getenv('DISCORD_TOKEN')
@@ -47,11 +47,20 @@ async def pricecheck(ctx, decklink: str):
             await ctx.send('Failed to retrieve the deck price from Archidekt. Please check the link and try again.')
         
     elif 'tappedout.net' in decklink:
-        price = get_deck_priceTapped(decklink)
-        if price:
+        prices = get_deck_price_tapped(decklink)
+        
+        prices1 = prices[0]
             
-            await ctx.send(f'Based on Card kingdom \nThe price of the deck is: {price[0]}$' + '-' + price[1] + '$')
-
+        prices2 = prices[1]
+        
+        if prices:
+            if len(prices1) == 2:
+                await ctx.send(f'Based on Card kingdom \nThe price of the deck is: {prices1[0]}$' + '-' + prices1[1] + '$\n'
+                            f'Based on TCGplayer \nThe price of the deck is: {prices2[0]}$' + '-' + prices2[1] + '$')
+            elif len(prices1) == 1:
+                await ctx.send(f'Based on Card kingdom \nThe price of the deck is: {prices1[0]}$' +'\n'
+                            f'Based on TCGplayer \nThe price of the deck is: {prices2[0]}$' + '-' + prices2[1] + '$')
+                
         else:
             await ctx.send('Failed to retrieve the deck price from Tappedout. Please check the link and try again.')
 
