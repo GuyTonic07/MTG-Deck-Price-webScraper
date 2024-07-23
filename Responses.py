@@ -4,7 +4,6 @@ import requests
 from bs4 import BeautifulSoup
 
 ##################################################### WebScrapper ###############################################
-# URL of the Archidekt deck
 
 
 def get_deck_priceArch(decklink): #Archidekt Code
@@ -33,6 +32,7 @@ def get_deck_priceArch(decklink): #Archidekt Code
     except Exception as e:
         return None  # An error occurred
     
+#################################################Tapped out################################################
     
 def get_deck_price_tapped(decklink): # Tappedout Code
     try:
@@ -67,8 +67,7 @@ def get_deck_price_tapped(decklink): # Tappedout Code
             return None  # Failed to fetch the webpage
     except Exception as e:
         print(f"An error occurred: {e}")
-        return None  # An error occurred
-
+        return None  
 
 
 ##################################################### Quotes ###############################################
@@ -78,6 +77,14 @@ def get_response():
         'There is a difference between you and me. We both looked into the abyss. But when it looked back at us… you blinked.',
         'and the universe said I love you',
         'You look like a calm and reasonable person',
-        'incrediblis'
+        'incrediblis',
+        'Do you know what type of animal waits for its own slaughter? sheep',
+        "I want to buy you something, but I don't have any money",
+        '4 pixels',
+        'one second of eterity has passed',
+        "Do not be sorry, be better",
+        "What counts is not necessarily the size of the dog in the fight - it's the size of the fight in the dog",
+        'you offer to the shrine but gain nothing',
+        'Dude, sucking is the first step to being sorta good at something'
     ]
     return random.choice(quote_list)
